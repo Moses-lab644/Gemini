@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gemini AI Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0b0c10;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    textarea {
+      width: 400px;
+      height: 100px;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #0078ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .response {
+      margin-top: 20px;
+      background-color: #1a1a1a;
+      padding: 15px;
+      width: 400px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>💬 Gemini AI Chatbot</h1>
+  <textarea id="prompt" placeholder="Type your question..."></textarea>
+  <button id="send">Ask Gemini</button>
+  <div class="response" id="response"></div>
+
+  <script>
+    const sendBtn = document.getElementById('send');
+    const promptInput = document.getElementById('prompt');
+    const responseDiv = document.getElementById('response');
+
+    sendBtn.addEventListener('click', async () => {
+      const prompt = promptInput.value.trim();
+      if (!prompt) return;
+
+      responseDiv.textContent = "Thinking...";
+      const res = await fetch('/api/query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+      const data = await res.json();
+      responseDiv.textContent = data.reply || "No response.";
+    });
+  </script>
+</body>
+</html>
